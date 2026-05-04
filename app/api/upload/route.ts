@@ -13,11 +13,14 @@ export async function POST(request: NextRequest) {
       `data:application/pdf;base64,${pdfBase64}`,
       {
         resource_type: 'raw',
-        use_filename: true,
-        unique_filename: true,
-        overwrite: false,
+        public_id: filename,
+        format: 'pdf',
+        overwrite: true,
       }
     )
+
+    // Force browser to open instead of download
+    const viewUrl = result.secure_url.replace('/raw/upload/', '/raw/upload/fl_attachment:false/')
     
     return NextResponse.json({ url: result.secure_url })
   } catch (error) {
