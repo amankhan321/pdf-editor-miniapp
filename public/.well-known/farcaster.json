@@ -1,0 +1,29 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "PDF Editor",
+    "subtitle": "Edit PDFs on Base",
+    "description": "Upload, edit, annotate and download PDF files. All edits recorded on Base blockchain.",
+    "homeUrl": "https://YOURAPP.vercel.app",
+    "iconUrl": "https://YOURAPP.vercel.app/icon.png",
+    "splashImageUrl": "https://YOURAPP.vercel.app/splash.png",
+    "splashBackgroundColor": "#030712",
+    "screenshotUrls": [
+      "https://YOURAPP.vercel.app/screenshot.png"
+    ],
+    "primaryCategory": "utility",
+    "tags": ["pdf", "editor", "utility", "base"],
+    "tagline": "Edit PDFs on Base",
+    "heroImageUrl": "https://YOURAPP.vercel.app/og-image.png",
+    "ogTitle": "PDF Editor",
+    "ogDescription": "Edit PDFs on Base — a Farcaster Mini App",
+    "ogImageUrl": "https://YOURAPP.vercel.app/og-image.png",
+    "noindex": false,
+    "requiredChains": ["eip155:8453"]
+  }
+}
