@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'PDF Editor',
   description: 'Edit PDFs on Base — a Farcaster Mini App',
   other: {
+    'base:app_id': '69f850a62e85d572ceed4c8d',
     'fc:miniapp': JSON.stringify({
       version: '1',
       imageUrl: 'https://pdf-editor-miniapp.vercel.app/og-image.png',
