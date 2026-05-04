@@ -13,8 +13,9 @@ export async function POST(request: NextRequest) {
       `data:application/pdf;base64,${pdfBase64}`,
       {
         resource_type: 'raw',
-        public_id: `pdfs/${filename}_${Date.now()}`,
-        format: 'pdf',
+        use_filename: true,
+        unique_filename: true,
+        overwrite: false,
       }
     )
     
