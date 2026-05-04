@@ -1,14 +1,12 @@
 import { v2 as cloudinary } from 'cloudinary'
 import { NextRequest, NextResponse } from 'next/server'
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-})
-
 export async function POST(request: NextRequest) {
   try {
+    cloudinary.config({
+      cloudinary_url: process.env.CLOUDINARY_URL,
+    })
+
     const { pdfBase64, filename } = await request.json()
     
     const result = await cloudinary.uploader.upload(
