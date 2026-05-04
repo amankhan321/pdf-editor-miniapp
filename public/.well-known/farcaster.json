@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "",
-    "payload": "",
-    "signature": ""
+    "header": "eyJmaWQiOjI1NjY0MywidHlwZSI6ImF1dGgiLCJrZXkiOiIweDdBN0JmMjdmYzM4OEExQzkwODlhRmYwNUZkQTIyYThEM0NkRkM0OGUifQ",
+    "payload": "eyJkb21haW4iOiJwZGYtZWRpdG9yLW1pbmlhcHAudmVyY2VsLmFwcCJ9",
+    "signature": "8bEn2H07YP2gQHhq7N1JcF590B63EVBd9pRZxs+fgoIVSZXrE87ojlx9IANFurpI4eLV2UAfsUma5ltIkZAL2hs="
   },
   "miniapp": {
     "version": "1",
@@ -11,7 +11,7 @@
     "description": "Upload, edit, annotate and download PDF files. All edits recorded on Base blockchain.",
     "homeUrl": "https://pdf-editor-miniapp.vercel.app/",
     "iconUrl": "https://pdf-editor-miniapp.vercel.app/icon.png",
-    "splashImageUrl": "https://YOURAPP.vercel.app/splash.png",
+    "splashImageUrl": "https://pdf-editor-miniapp.vercel.app/splash.png",
     "splashBackgroundColor": "#030712",
     "screenshotUrls": [
       "https://pdf-editor-miniapp.vercel.app/screenshot.png"
