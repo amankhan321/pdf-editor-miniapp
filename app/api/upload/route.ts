@@ -15,13 +15,17 @@ export async function POST(request: NextRequest) {
       `data:application/pdf;base64,${pdfBase64}`,
       {
         resource_type: 'raw',
-        public_id: filename,
+        public_id: `pdfs/${filename}_${Date.now()}`,
         format: 'pdf',
       }
     )
     
     return NextResponse.json({ url: result.secure_url })
   } catch (error) {
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
+    console.error('Cloudinary error:', error)
+    return NextResponse.json({ 
+      error: 'Upload failed',
+      details: String(error)
+    }, { status: 500 })
   }
 }
