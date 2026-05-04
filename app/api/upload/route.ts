@@ -9,18 +9,16 @@ export async function POST(request: NextRequest) {
 
     const { pdfBase64, filename } = await request.json()
     
+    const cleanName = filename.replace(/[^a-zA-Z0-9]/g, '_')
+    
     const result = await cloudinary.uploader.upload(
       `data:application/pdf;base64,${pdfBase64}`,
       {
         resource_type: 'raw',
-        public_id: filename,
-        format: 'pdf',
-        overwrite: true,
+        public_id: `${cleanName}_${Date.now()}`,
+        overwrite: false,
       }
     )
-
-    // Force browser to open instead of download
-    const viewUrl = result.secure_url.replace('/raw/upload/', '/raw/upload/fl_attachment:false/')
     
     return NextResponse.json({ url: result.secure_url })
   } catch (error) {
