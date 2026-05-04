@@ -56,16 +56,20 @@ export default function PDFEditor() {
 
       const pdfBytes = await pdfDoc.save()
       
-      // Download
+     // Download - convert to base64 for Farcaster compatibility
       const blob = new Blob([pdfBytes], { type: 'application/pdf' })
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = imageFile.name.replace(/\.(jpg|jpeg|png)$/i, '') + '.pdf'
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(url)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const base64 = reader.result as string
+        const link = document.createElement('a')
+        link.href = base64
+        link.download = imageFile.name.replace(/\.(jpg|jpeg|png)$/i, '') + '.pdf'
+        link.target = '_blank'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
+      reader.readAsDataURL(blob)
       
       setStatus('✅ Downloaded!')
     } catch {
