@@ -50,12 +50,28 @@ export default function PDFEditor() {
       const page = pdfDoc.addPage([image.width, image.height])
       page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height })
       const pdfBytes = await pdfDoc.save()
+
       const base64 = btoa(
         pdfBytes.reduce((data, byte) => data + String.fromCharCode(byte), '')
       )
-      const dataUrl = `data:application/pdf;base64,${base64}`
-      setPdfUrl(dataUrl)
-      setStatus('✅ PDF ready!')
+
+      setStatus('Uploading...')
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pdfBase64: base64,
+          filename: imageFile.name.replace(/\.(jpg|jpeg|png)$/i, '')
+        })
+      })
+
+      const data = await response.json()
+      if (data.url) {
+        setPdfUrl(data.url)
+        setStatus('✅ PDF ready! Tap Open PDF to save it.')
+      } else {
+        setStatus('❌ Upload failed. Try again.')
+      }
     } catch {
       setStatus('❌ Error. Try again.')
     }
@@ -127,19 +143,18 @@ export default function PDFEditor() {
             disabled={converting}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-3 rounded-xl text-sm font-bold mb-3"
           >
-            {converting ? '⏳ Converting...' : '🔄 Convert to PDF'}
+            {converting ? '⏳ ' + status : '🔄 Convert to PDF'}
           </button>
-          {status && (
+          {status && !converting && (
             <div className="text-xs text-center py-2 bg-gray-700 rounded-lg mb-3">{status}</div>
           )}
           {pdfUrl && (
-            
-              <button
-  onClick={() => window.open(pdfUrl!, '_blank')}
-  className="block w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl text-sm font-bold text-center"
->
-  ⬇️ Open PDF
-</button>
+            <button
+              onClick={() => window.open(pdfUrl, '_blank')}
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl text-sm font-bold text-center"
+            >
+              ⬇️ Open PDF
+            </button>
           )}
         </div>
       )}
