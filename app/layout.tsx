@@ -8,14 +8,14 @@ export const metadata: Metadata = {
   other: {
     'fc:miniapp': JSON.stringify({
       version: '1',
-      imageUrl: 'https://YOURAPP.vercel.app/og-image.png',
+      imageUrl: 'https://pdf-editor-miniapp.vercel.app/og-image.png',
       button: {
         title: 'Edit your PDF',
         action: {
           type: 'launch_miniapp',
           name: 'PDF Editor',
-          url: 'https://YOURAPP.vercel.app',
-          splashImageUrl: 'https://YOURAPP.vercel.app/splash.png',
+          url: 'https://pdf-editor-miniapp.vercel.app/',
+          splashImageUrl: 'https://pdf-editor-miniapp.vercel.app/splash.png',
           splashBackgroundColor: '#030712',
         },
       },
