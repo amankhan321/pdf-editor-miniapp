@@ -11,6 +11,7 @@ export default function PDFEditor() {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [status, setStatus] = useState('')
   const [converting, setConverting] = useState(false)
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const { address, isConnected } = useAccount()
@@ -26,54 +27,37 @@ export default function PDFEditor() {
     const file = e.target.files?.[0]
     if (!file) return
     setImageFile(file)
+    setPdfUrl(null)
+    setStatus('')
     const url = URL.createObjectURL(file)
     setImagePreview(url)
-    setStatus(`Loaded: ${file.name}`)
   }
 
   const handleConvert = async () => {
     if (!imageFile) return
     setConverting(true)
     setStatus('Converting...')
+    setPdfUrl(null)
     try {
       const imageBytes = await imageFile.arrayBuffer()
       const pdfDoc = await PDFDocument.create()
-      
       let image
       if (imageFile.type === 'image/png') {
         image = await pdfDoc.embedPng(imageBytes)
       } else {
         image = await pdfDoc.embedJpg(imageBytes)
       }
-
       const page = pdfDoc.addPage([image.width, image.height])
-      page.drawImage(image, {
-        x: 0,
-        y: 0,
-        width: image.width,
-        height: image.height,
-      })
-
+      page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height })
       const pdfBytes = await pdfDoc.save()
-      
-     // Download - convert to base64 for Farcaster compatibility
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' })
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        const base64 = reader.result as string
-        const link = document.createElement('a')
-        link.href = base64
-        link.download = imageFile.name.replace(/\.(jpg|jpeg|png)$/i, '') + '.pdf'
-        link.target = '_blank'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      }
-      reader.readAsDataURL(blob)
-      
-      setStatus('✅ Downloaded!')
+      const base64 = btoa(
+        pdfBytes.reduce((data, byte) => data + String.fromCharCode(byte), '')
+      )
+      const dataUrl = `data:application/pdf;base64,${base64}`
+      setPdfUrl(dataUrl)
+      setStatus('✅ PDF ready!')
     } catch {
-      setStatus('Error converting. Try again.')
+      setStatus('❌ Error. Try again.')
     }
     setConverting(false)
   }
@@ -137,7 +121,7 @@ export default function PDFEditor() {
 
       {imageFile && (
         <div className="bg-gray-800 rounded-2xl p-5 mb-4">
-          <p className="text-sm font-medium mb-3">2. Convert & Download</p>
+          <p className="text-sm font-medium mb-3">2. Convert to PDF</p>
           <button
             onClick={handleConvert}
             disabled={converting}
@@ -146,7 +130,18 @@ export default function PDFEditor() {
             {converting ? '⏳ Converting...' : '🔄 Convert to PDF'}
           </button>
           {status && (
-            <div className="text-xs text-center py-2 bg-gray-700 rounded-lg">{status}</div>
+            <div className="text-xs text-center py-2 bg-gray-700 rounded-lg mb-3">{status}</div>
+          )}
+          {pdfUrl && (
+            
+              href={pdfUrl}
+              download="converted.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl text-sm font-bold text-center"
+            >
+              ⬇️ Download PDF
+            </a>
           )}
         </div>
       )}
