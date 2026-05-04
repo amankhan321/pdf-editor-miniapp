@@ -134,14 +134,12 @@ export default function PDFEditor() {
           )}
           {pdfUrl && (
             
-              href={pdfUrl}
-              download="converted.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl text-sm font-bold text-center"
-            >
-              ⬇️ Download PDF
-            </a>
+              <button
+  onClick={() => window.open(pdfUrl!, '_blank')}
+  className="block w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl text-sm font-bold text-center"
+>
+  ⬇️ Open PDF
+</button>
           )}
         </div>
       )}
